@@ -50,4 +50,15 @@ rotate([H|T], E, [H|RL]) :- rotate(T, E, RL).
 rotate([], []).
 rotate([H|T], RL) :- rotate(T, H, RL).
 
+% dice(X)
+% Generates all possible outcomes of throwing a dice.
+% example: dice(X): X/1; X/2; ... X/6
+dice(N, N).
+dice(I, X) :- Next is I + 1, Next < 7, dice(Next, X).
+dice(X) :- dice(1, X).
+
+% three_dice(5, L).
+% Generates all possible outcomes of throwing three dices
+% exmple: three_dice(5, L). -> L/[1,1,3]; L/[1,2,2];...;L/[3,1,1]
+three_dice(L) :- dice(X), dice(Y), dice(Z), L = [X, Y, Z].
 
