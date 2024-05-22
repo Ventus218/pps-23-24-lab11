@@ -113,3 +113,16 @@ outDegree([H|T], N, D) :- outDegree(T, N, D).
 % possibly use findall , looking for e(Node ,_) combined
 % with member(?Elem,?List)
 reaching(G, N, LO) :- findall(X, member(e(N,X), G), LO).
+
+% nodes (+Graph , -Nodes)
+% create a list of all nodes (no duplicates) in the graph (inverse of fromList)
+% I KNOW IT'S NOT EFFICIENT BUT IT'S SIMPLE
+append_unique([], E, [E]).
+append_unique([E|T], E, [E|T]) :- !.
+append_unique([H|T], E, [H|LO]) :- append_unique(T, E, LO).
+
+nodes([e(A,B)], N) :- append_unique([A], B, N), !.
+nodes([e(A,B)|T], N) :- nodes(T, NR), append_unique(NR, A, NR2), append_unique(NR2, B, N).
+
+
+
