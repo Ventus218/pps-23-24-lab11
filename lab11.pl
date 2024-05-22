@@ -85,3 +85,18 @@ dropAll(X, [H | Xs], [H | L]) :- dropAll(X, Xs, L). % untouched
 
 % ********** PART 3 **********
 
+% fromList(+List,-Graph)
+fromList([_],[]).
+fromList([H1,H2|T],[e(H1,H2)|L]):- fromList([H2|T],L).
+
+% fromCircList(+List,-Graph)
+appendLast([], E, [E]).
+appendLast([H|T], E, [H|LO]) :- appendLast(T, E, LO).
+
+fromCircList([H|T], G) :- appendLast([H|T], H, LO), fromList(LO, G).
+
+% more complex but faster version which uses a var to remember the first element
+fromCircList_fast([Last], First,[e(Last, First)]).
+fromCircList_fast([H1,H2|T], FirstE,[e(H1,H2)|L]):- fromCircList_fast([H2|T] ,FirstE, L).
+fromCircList_fast([H|T], G) :- fromCircList_fast([H|T], H, G).
+
