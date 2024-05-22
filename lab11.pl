@@ -62,3 +62,26 @@ dice(X) :- dice(1, X).
 % exmple: three_dice(5, L). -> L/[1,1,3]; L/[1,2,2];...;L/[3,1,1]
 three_dice(L) :- dice(X), dice(Y), dice(Z), L = [X, Y, Z].
 
+
+% ********** PART 2 **********
+
+% dropAny(?Elem,?List,?OutList)
+dropAny(X, [X | T], T).
+dropAny(X, [H | Xs], [H | L]) :- dropAny(X, Xs, L).
+
+dropFirst(E, L, LO) :- dropAny(E, L, LO), !.
+
+% didn't find a simpler solution than reversing the list and applying dropFirst
+my_reverse([], []).
+my_reverse([], LO, LO).
+my_reverse([H | T], Acc, LO) :- my_reverse(T, [H|Acc], LO). 
+my_reverse([H | T], LO) :- my_reverse(T, [H], LO). 
+dropLast(X, L, LO) :- my_reverse(L, RL), dropFirst(X, RL, RLO), my_reverse(RLO, LO).
+
+dropAll(X, [], []). % added
+dropAll(X, [X | T], L) :- dropAll(X, T, L), !. % modified
+dropAll(X, [H | Xs], [H | L]) :- dropAll(X, Xs, L). % untouched
+
+
+% ********** PART 3 **********
+
