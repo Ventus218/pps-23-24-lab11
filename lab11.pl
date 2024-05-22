@@ -107,3 +107,9 @@ outDegree([e(N,_)|T], N, D) :- outDegree(T, N, D1), D is 1 + D1, !.
 outDegree([H|T], N, D) :- outDegree(T, N, D).
 
 
+
+% reaching(+Graph, +Node, -List)
+% all the nodes that can be reached in 1 step from Node
+% possibly use findall , looking for e(Node ,_) combined
+% with member(?Elem,?List)
+reaching(G, N, LO) :- findall(X, member(e(N,X), G), LO).
