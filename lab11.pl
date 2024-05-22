@@ -100,3 +100,10 @@ fromCircList_fast([Last], First,[e(Last, First)]).
 fromCircList_fast([H1,H2|T], FirstE,[e(H1,H2)|L]):- fromCircList_fast([H2|T] ,FirstE, L).
 fromCircList_fast([H|T], G) :- fromCircList_fast([H|T], H, G).
 
+% outDegree(+Graph, +Node, -Deg)
+% Deg is the number of edges which start from Node
+outDegree([], N, 0).
+outDegree([e(N,_)|T], N, D) :- outDegree(T, N, D1), D is 1 + D1, !.
+outDegree([H|T], N, D) :- outDegree(T, N, D).
+
+
