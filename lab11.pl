@@ -126,3 +126,25 @@ nodes([e(A,B)|T], N) :- nodes(T, NR), append_unique(NR, A, NR2), append_unique(N
 
 
 
+% ********** PART 4 **********
+% T is a list of cells from top left to bottom right row by row.
+% cells can be 'x', 'o' or 'e' where e stands for empty
+result([R,R,R,_,_,_,_,_,_], R) :- R \= e, !. % first row
+result([_,_,_,R,R,R,_,_,_], R) :- R \= e, !. % second row
+result([_,_,_,_,_,_,R,R,R], R) :- R \= e, !. % third row
+result([R,_,_,R,_,_,R,_,_], R) :- R \= e, !. % first column
+result([_,R,_,_,R,_,_,R,_], R) :- R \= e, !. % second column
+result([_,_,R,_,_,R,_,_,R], R) :- R \= e, !. % third column
+result([R,_,_,_,R,_,_,_,R], R) :- R \= e, !. % top-left to bottom-right diagonal
+result([_,_,R,_,R,_,R,_,_], R) :- R \= e, !. % top-right to bottom-left diagonal
+result([E], even) :- E \= e, !.
+result([H|T], R) :- H \= e, result(T, R), !.
+result([H|T], nothing).
+
+next(T, P, R, NT) :- next(T, P, NT), result(NT, R). % just start the computation and return a result for the new T
+
+next([e], P, [P]) :- !.
+next([e|T], P, [P|T]).
+next([e|T], P, [e|NT]) :- next(T, P, NT).
+next([M|T], P, [M|NT]) :- M \= e, next(T, P, NT).
+
