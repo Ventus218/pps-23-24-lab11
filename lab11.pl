@@ -79,7 +79,7 @@ my_reverse([H | T], LO) :- my_reverse(T, [H], LO).
 dropLast(X, L, LO) :- my_reverse(L, RL), dropFirst(X, RL, RLO), my_reverse(RLO, LO).
 
 dropAll(X, [], []). % added
-dropAll(X, [X | T], L) :- dropAll(X, T, L), !. % modified
+dropAll(X, [CX | T], L) :- copy_term(X, CX), dropAll(X, T, L), !. % modified
 dropAll(X, [H | Xs], [H | L]) :- dropAll(X, Xs, L). % untouched
 
 
@@ -106,7 +106,9 @@ outDegree([], N, 0).
 outDegree([e(N,_)|T], N, D) :- outDegree(T, N, D1), D is 1 + D1, !.
 outDegree([H|T], N, D) :- outDegree(T, N, D).
 
-
+% dropNode(+Graph, +Node, -OutGraph)
+% drop all edges starting and leaving from a Node % use dropAll defined in 1.1??
+dropNode(G,N,OG) :- dropAll(e(N,_),G, G2), dropAll(e(_,N),G2,OG).
 
 % reaching(+Graph, +Node, -List)
 % all the nodes that can be reached in 1 step from Node
