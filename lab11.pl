@@ -130,9 +130,7 @@ nodes([e(A,B)|T], N) :- nodes(T, NR), append_unique(NR, A, NR2), append_unique(N
 % anypath(+Graph, +Node1, +Node2, -ListPath)
 % a path from Node1 to Node2
 % if there are many path , they are showed 1-by -1
-% WORKS BUT SHOWS SOME DUPLICATED PATHS example: anypath([e(5,6),e(2,3),e(3,4),e(2,4)],2,4,L).
-anypath([e(N1,N2)|_], N1, N2, [e(N1,N2)]).
-anypath([e(A,B)|T], N1, N2, LPR) :- anypath(T, N1, N2, LPR).
+anypath(G, N1, N2, [e(N1,N2)]) :- member(e(N1,N2), G).
 anypath(G, N1, N2, [e(N1,N3)|LP]) :- reaching(G, N1, N3L), member(N3, N3L), anypath(G, N3, N2, LP).
 
 
