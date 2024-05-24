@@ -71,12 +71,8 @@ dropAny(X, [H | Xs], [H | L]) :- dropAny(X, Xs, L).
 
 dropFirst(E, L, LO) :- dropAny(E, L, LO), !.
 
-% didn't find a simpler solution than reversing the list and applying dropFirst
-my_reverse([], []).
-my_reverse([], LO, LO).
-my_reverse([H | T], Acc, LO) :- my_reverse(T, [H|Acc], LO). 
-my_reverse([H | T], LO) :- my_reverse(T, [H], LO). 
-dropLast(X, L, LO) :- my_reverse(L, RL), dropFirst(X, RL, RLO), my_reverse(RLO, LO).
+dropLast(X, [H | Xs], [H | L]) :- dropLast(X, Xs, L), !.
+dropLast(X, [X | T], T).
 
 dropAll(X, [], []). % added
 dropAll(X, [CX | T], L) :- copy_term(X, CX), dropAll(X, T, L), !. % modified
@@ -125,7 +121,6 @@ append_unique([H|T], E, [H|LO]) :- append_unique(T, E, LO).
 
 nodes([e(A,B)], N) :- append_unique([A], B, N), !.
 nodes([e(A,B)|T], N) :- nodes(T, NR), append_unique(NR, A, NR2), append_unique(NR2, B, N).
-
 
 % anypath(+Graph, +Node1, +Node2, -ListPath)
 % a path from Node1 to Node2
