@@ -154,5 +154,6 @@ next([M|T], P, [M|NT]) :- M \= e, next(T, P, NT).
 other_player(x, o).
 other_player(o, x).
 
-game(T, P, R, []) :- R \= nothing, !.
-game(T, P, R, [NT|NTR]) :- next(T, P, NR, NT), write(NT), write(NR), write('\n'), other_player(P, OP), game(NT, OP, NR, NTR).
+game(T, P, R, R, []) :- R \= nothing, !.
+game(T, P, R, RO, [NT|NTR]) :- next(T, P, NR, NT), other_player(P, OP), game(NT, OP, NR, RO, NTR).
+game(T, P, R, LT) :- game(T, P, nothing, R, LT).
