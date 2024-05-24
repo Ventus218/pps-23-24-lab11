@@ -129,6 +129,7 @@ nodes([e(A,B)|T], N) :- nodes(T, NR), append_unique(NR, A, NR2), append_unique(N
 
 
 % ********** PART 4 **********
+
 % T is a list of cells from top left to bottom right row by row.
 % cells can be 'x', 'o' or 'e' where e stands for empty
 % Result can be 'x', 'o', 'even' or 'nothing' where nothing stands for a T without winners which can be played more
@@ -154,6 +155,12 @@ next([M|T], P, [M|NT]) :- M \= e, next(T, P, NT).
 other_player(x, o).
 other_player(o, x).
 
+% R (Result) is passed along as the result of the last next and is used to determine if recursion should continue
+% when R is \= from nothing then it is "returned" as RO (ResultOutput) which is the actual output of the game.
 game(T, P, R, R, []) :- R \= nothing, !.
 game(T, P, R, RO, [NT|NTR]) :- next(T, P, NR, NT), other_player(P, OP), game(NT, OP, NR, RO, NTR).
 game(T, P, R, LT) :- game(T, P, nothing, R, LT).
+
+% test using:
+%   game([x,o,e,e,e,e,e,e,e], x, R, NT)
+% as starting from an empty T gives time overflow
