@@ -131,6 +131,7 @@ nodes([e(A,B)|T], N) :- nodes(T, NR), append_unique(NR, A, NR2), append_unique(N
 % ********** PART 4 **********
 % T is a list of cells from top left to bottom right row by row.
 % cells can be 'x', 'o' or 'e' where e stands for empty
+% Result can be 'x', 'o', 'even' or 'nothing' where nothing stands for a T without winners which can be played more
 result([R,R,R,_,_,_,_,_,_], R) :- R \= e, !. % first row
 result([_,_,_,R,R,R,_,_,_], R) :- R \= e, !. % second row
 result([_,_,_,_,_,_,R,R,R], R) :- R \= e, !. % third row
@@ -150,3 +151,8 @@ next([e|T], P, [P|T]).
 next([e|T], P, [e|NT]) :- next(T, P, NT).
 next([M|T], P, [M|NT]) :- M \= e, next(T, P, NT).
 
+other_player(x, o).
+other_player(o, x).
+
+game(T, P, R, []) :- R \= nothing, !.
+game(T, P, R, [NT|NTR]) :- next(T, P, NR, NT), write(NT), write(NR), write('\n'), other_player(P, OP), game(NT, OP, NR, NTR).
