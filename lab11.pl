@@ -135,6 +135,7 @@ anypath(G, N1, N2, [e(N1,N3)|LP]) :- reaching(G, N1, N3L), member(N3, N3L), anyp
 % IT RETURNS DUPLICATE NODES, IS IT ACCEPTABLE?? (test with: allreaching([e(1,2),e(2,3),e(3,5),e(1,5)],1,L) )
 allreaching(G, N, NL) :- findall(N2, anypath(G, N, N2, _), NL).
 
+% I DID NOT UNDERSTAND EX 3.9
 
 % ********** PART 4 **********
 
