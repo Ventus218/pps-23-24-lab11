@@ -128,6 +128,13 @@ nodes([e(A,B)|T], N) :- nodes(T, NR), append_unique(NR, A, NR2), append_unique(N
 anypath(G, N1, N2, [e(N1,N2)]) :- member(e(N1,N2), G).
 anypath(G, N1, N2, [e(N1,N3)|LP]) :- reaching(G, N1, N3L), member(N3, N3L), anypath(G, N3, N2, LP).
 
+% allreaching(+Graph, +Node, -List)
+% all the nodes that can be reached from Node
+% Suppose the graph is NOT circular!
+% Use findall and anyPath!
+% IT RETURNS DUPLICATE NODES, IS IT ACCEPTABLE?? (test with: allreaching([e(1,2),e(2,3),e(3,5),e(1,5)],1,L) )
+allreaching(G, N, NL) :- findall(N2, anypath(G, N, N2, _), NL).
+
 
 % ********** PART 4 **********
 
